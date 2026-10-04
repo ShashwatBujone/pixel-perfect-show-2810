@@ -11,7 +11,7 @@ const RULES: Rule[] = [
     /\bdouble (your|the) (money|investment)\b/i, /\b(100%|completely) safe\b/i,
     /गारंटी|पक्का (रिटर्न|मुनाफा)|हमी|दुप्पट|दोगुना/ ] },
   { key: "highReturn", weight: 14, severity: "red", patterns: [
-    /\b([2-9]\d|\d{3,})\s?%[^.!?\n]{0,40}\b(in|within|per|every|a)\s*(\d+\s*)?(days?|weeks?|months?|month)\b/i,
+    /\b([2-9]\d|\d{3,})\s?%[^.!?\n]{0,40}\b(days?|weeks?|months?|monthly|weekly|daily)\b/i,
     /\b([3-9]|\d{2,})x (returns?|your money)\b/i ] },
   { key: "urgency", weight: 13, severity: "red", patterns: [
     /\b(limited (seats|time|slots|offer)|act now|hurry|immediately|urgent(ly)?|today only|last chance|only \d+ (seats|slots|spots)|expires? (today|soon)|within 24 hours)\b/i,
@@ -29,7 +29,7 @@ const RULES: Rule[] = [
     /\b(approved|certified|backed) by (sebi|rbi|the government|govt)\b/i,
     /सेबी (द्वारा )?(मान्यता|अनुमोदित)|सरकार मान्य/ ] },
   { key: "insider", weight: 12, severity: "orange", patterns: [
-    /\b(insider (info|information|tips?)|exclusive (opportunity|tips?|access|picks?)|secret (strategy|tips?)|special investment opportunity|operator (call|tips?)|sure[- ]shot)\b/i ] },
+    /\b(insider (info|information|tips?)|exclusive( \w+)? (opportunity|tips?|access|picks?)|secret (strategy|tips?)|special investment opportunity|operator (call|tips?)|sure[- ]shot)\b/i ] },
   { key: "credentials", weight: 25, severity: "red", patterns: [
     /\b(share|send|provide|tell|enter|give)\b[^.!?\n]{0,30}\b(otp|password|pin|cvv|net ?banking|login|card (number|details))\b/i,
     /ओटीपी (बताएं|भेजें|शेअर करा)/ ] },
@@ -69,7 +69,7 @@ export function analyze(text: string): Result {
   let raw = flags.reduce((s, f) => s + f.weight, 0);
   if (flags.length >= 5) raw += 12;
   else if (flags.length >= 3) raw += 8;
-  const score = Math.min(100, Math.round(raw > 60 ? 60 + (raw - 60) * 0.65 : raw));
+  const score = Math.min(100, Math.round(raw > 60 ? 60 + (raw - 60) * 0.4 : raw));
   flags.sort((a, b) => (a.severity === b.severity ? b.weight - a.weight : a.severity === "red" ? -1 : 1));
   return { score, level: levelFor(score), flags, text };
 }
