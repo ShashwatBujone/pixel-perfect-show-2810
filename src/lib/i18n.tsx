@@ -1,11 +1,12 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import type { FlagKey, Lang, Level } from "./engine";
 
+type UiKey = "report"|"indicators"|"detected"|"none"|"noneBody"|"why"|"signal"|"evidence"|"matters"|"whyMatters"|"whyHigh"|"whyMod"|"whyLow"|"next"|"listen"|"stop"|"again"|"disclaimer"|"simple"|"local";
 type FlagText = { title: string; explain: string; simple: string };
 type Dict = {
   levels: Record<Level, string>;
   flags: Record<FlagKey, FlagText>;
-  ui: Record<string, string>;
+  ui: Record<UiKey, string>;
   steps: string[];
   nextSteps: string[];
 };
